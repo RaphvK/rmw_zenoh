@@ -382,7 +382,8 @@ bool SubscriptionData::detach_condition_and_queue_is_empty()
 rmw_ret_t SubscriptionData::take_one_message(
   void * ros_message,
   rmw_message_info_t * message_info,
-  bool * taken)
+  bool * taken,
+  size_t * payload_size)
 {
   *taken = false;
 
@@ -432,6 +433,9 @@ rmw_ret_t SubscriptionData::take_one_message(
     message_info->from_intra_process = false;
   }
   *taken = true;
+  if (payload_size != nullptr) {
+    *payload_size = payload_data.size();
+  }
 
   return RMW_RET_OK;
 }
@@ -440,7 +444,8 @@ rmw_ret_t SubscriptionData::take_one_message(
 rmw_ret_t SubscriptionData::take_serialized_message(
   rmw_serialized_message_t * serialized_message,
   bool * taken,
-  rmw_message_info_t * message_info)
+  rmw_message_info_t * message_info,
+  size_t * payload_size)
 {
   *taken = false;
 
@@ -487,6 +492,9 @@ rmw_ret_t SubscriptionData::take_serialized_message(
       msg_data->attachment.copy_gid().data(),
       RMW_GID_STORAGE_SIZE);
     message_info->from_intra_process = false;
+  }
+  if (payload_size != nullptr) {
+    *payload_size = payload_data.size();
   }
 
   return RMW_RET_OK;

@@ -102,12 +102,14 @@ public:
   rmw_ret_t take_one_message(
     void * ros_message,
     rmw_message_info_t * message_info,
-    bool * taken);
+    bool * taken,
+    size_t * payload_size = nullptr);
 
   rmw_ret_t take_serialized_message(
     rmw_serialized_message_t * serialized_message,
     bool * taken,
-    rmw_message_info_t * message_info);
+    rmw_message_info_t * message_info,
+    size_t * payload_size = nullptr);
 
   void set_on_new_message_callback(
     rmw_event_callback_t callback,

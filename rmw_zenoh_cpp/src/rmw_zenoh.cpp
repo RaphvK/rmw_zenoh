@@ -1169,13 +1169,15 @@ rmw_take(
     return sub_data->take_one_message(ros_message, nullptr, taken);
   }
   rmw_message_info_t message_info{};
-  rmw_ret_t ret = sub_data->take_one_message(ros_message, &message_info, taken);
+  size_t payload_size = 0;
+  rmw_ret_t ret = sub_data->take_one_message(ros_message, &message_info, taken, &payload_size);
   TRACETOOLS_DO_TRACEPOINT(
     rmw_take,
     static_cast<const void *>(subscription),
     static_cast<const void *>(ros_message),
     message_info.source_timestamp,
-    *taken);
+    *taken,
+    payload_size);
   return ret;
 }
 
@@ -1205,13 +1207,15 @@ rmw_take_with_info(
     static_cast<rmw_zenoh_cpp::SubscriptionData *>(subscription->data);
   RMW_CHECK_ARGUMENT_FOR_NULL(sub_data, RMW_RET_INVALID_ARGUMENT);
 
-  rmw_ret_t ret = sub_data->take_one_message(ros_message, message_info, taken);
+  size_t payload_size = 0;
+  rmw_ret_t ret = sub_data->take_one_message(ros_message, message_info, taken, &payload_size);
   TRACETOOLS_TRACEPOINT(
     rmw_take,
     static_cast<const void *>(subscription),
     static_cast<const void *>(ros_message),
     message_info->source_timestamp,
-    *taken);
+    *taken,
+    payload_size);
   return ret;
 }
 
@@ -1317,17 +1321,20 @@ __rmw_take_serialized(
     static_cast<rmw_zenoh_cpp::SubscriptionData *>(subscription->data);
   RMW_CHECK_ARGUMENT_FOR_NULL(sub_data, RMW_RET_INVALID_ARGUMENT);
 
+  size_t payload_size = 0;
   rmw_ret_t ret = sub_data->take_serialized_message(
     serialized_message,
     taken,
-    message_info
+    message_info,
+    &payload_size
   );
   TRACETOOLS_TRACEPOINT(
     rmw_take,
     static_cast<const void *>(subscription),
     static_cast<const void *>(serialized_message),
     (message_info ? message_info->source_timestamp : 0LL),
-    *taken);
+    *taken,
+    payload_size);
   return ret;
 }
 }  // namespace
