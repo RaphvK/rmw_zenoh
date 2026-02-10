@@ -1176,7 +1176,11 @@ rmw_take(
     static_cast<const void *>(subscription),
     static_cast<const void *>(ros_message),
     message_info.source_timestamp,
-    *taken,
+    *taken);
+  TRACETOOLS_DO_TRACEPOINT(
+    rmw_payload,
+    static_cast<const void *>(subscription),
+    static_cast<const void *>(ros_message),
     payload_size);
   return ret;
 }
@@ -1214,7 +1218,11 @@ rmw_take_with_info(
     static_cast<const void *>(subscription),
     static_cast<const void *>(ros_message),
     message_info->source_timestamp,
-    *taken,
+    *taken);
+  TRACETOOLS_DO_TRACEPOINT(
+    rmw_payload,
+    static_cast<const void *>(subscription),
+    static_cast<const void *>(ros_message),
     payload_size);
   return ret;
 }
@@ -1333,7 +1341,11 @@ __rmw_take_serialized(
     static_cast<const void *>(subscription),
     static_cast<const void *>(serialized_message),
     (message_info ? message_info->source_timestamp : 0LL),
-    *taken,
+    *taken);
+  TRACETOOLS_DO_TRACEPOINT(
+    rmw_payload,
+    static_cast<const void *>(subscription),
+    static_cast<const void *>(serialized_message),
     payload_size);
   return ret;
 }
