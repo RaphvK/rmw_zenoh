@@ -6,6 +6,7 @@
 	"image": "ros:rolling",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
 	"workspaceFolder": "/workspaces/src",
+	"runArgs": ["--shm-size=4gb"],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
